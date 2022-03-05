@@ -2,5 +2,30 @@
 Utility functions for image processing, file handling, and visualization.
 """
 
-# Exports will be added as modules are created
-__all__ = []
+from src.utils.file_utils import (
+    ensure_dir,
+    get_file_extension,
+    get_filename_without_extension,
+    is_image_file,
+    is_video_file,
+    build_output_filename,
+    list_files_by_extension,
+    list_all_images,
+    format_bytes,
+    safe_filename,
+    create_output_directory
+)
+
+__all__ = [
+    'ensure_dir',
+    'get_file_extension',
+    'get_filename_without_extension',
+    'is_image_file',
+    'is_video_file',
+    'build_output_filename',
+    'list_files_by_extension',
+    'list_all_images',
+    'format_bytes',
+    'safe_filename',
+    'create_output_directory'
+]
