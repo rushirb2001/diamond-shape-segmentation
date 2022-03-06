@@ -21,7 +21,15 @@ from src.utils.segmentation import (
     visualize_mask,
     get_mask_stats,
     create_centered_mask,
-    validate_mask
+    validate_mask,
+    apply_clahe,
+    rgb_to_lab,
+    bgr_to_lab,
+    lab_to_bgr,
+    lab_to_rgb,
+    enhance_diamond_image,
+    preprocess_for_segmentation,
+    adjust_brightness_contrast
 )
 
 __all__ = [
@@ -42,5 +50,14 @@ __all__ = [
     'visualize_mask',
     'get_mask_stats',
     'create_centered_mask',
-    'validate_mask'
+    'validate_mask',
+    # Image preprocessing
+    'apply_clahe',
+    'rgb_to_lab',
+    'bgr_to_lab',
+    'lab_to_bgr',
+    'lab_to_rgb',
+    'enhance_diamond_image',
+    'preprocess_for_segmentation',
+    'adjust_brightness_contrast'
 ]

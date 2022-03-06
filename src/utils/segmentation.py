@@ -161,3 +161,171 @@ def validate_mask(mask: np.ndarray) -> Tuple[bool, str]:
         return False, f"Mask contains invalid values: {unique_values}"
     
     return True, "Valid mask"
+
+
+# ============================================================================
+# Image Preprocessing Functions - CLAHE and Color Space Conversion
+# ============================================================================
+
+
+def apply_clahe(image: np.ndarray, 
+                clip_limit: float = 3.0, 
+                tile_grid_size: Tuple[int, int] = (8, 8)) -> np.ndarray:
+    """
+    Apply Contrast Limited Adaptive Histogram Equalization (CLAHE).
+    
+    CLAHE improves local contrast and enhances the definition of edges
+    in each region of an image. It's particularly useful for diamond images
+    where lighting may be uneven.
+    
+    Args:
+        image: Input BGR image
+        clip_limit: Threshold for contrast limiting (default: 3.0)
+        tile_grid_size: Size of grid for histogram equalization (default: 8x8)
+        
+    Returns:
+        CLAHE-enhanced BGR image
+    """
+    # Convert BGR to LAB color space
+    lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
+    
+    # Split into L, A, B channels
+    l_channel, a_channel, b_channel = cv2.split(lab)
+    
+    # Apply CLAHE to L channel only
+    clahe = cv2.createCLAHE(clipLimit=clip_limit, tileGridSize=tile_grid_size)
+    cl = clahe.apply(l_channel)
+    
+    # Merge channels back
+    enhanced_lab = cv2.merge((cl, a_channel, b_channel))
+    
+    # Convert back to BGR
+    enhanced_bgr = cv2.cvtColor(enhanced_lab, cv2.COLOR_LAB2BGR)
+    
+    return enhanced_bgr
+
+
+def rgb_to_lab(image: np.ndarray) -> np.ndarray:
+    """
+    Convert RGB image to LAB color space.
+    
+    LAB color space separates lightness from color information,
+    making it useful for processing diamond images.
+    
+    Args:
+        image: Input RGB image
+        
+    Returns:
+        LAB color space image
+    """
+    return cv2.cvtColor(image, cv2.COLOR_RGB2LAB)
+
+
+def bgr_to_lab(image: np.ndarray) -> np.ndarray:
+    """
+    Convert BGR image to LAB color space.
+    
+    Args:
+        image: Input BGR image
+        
+    Returns:
+        LAB color space image
+    """
+    return cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
+
+
+def lab_to_bgr(image: np.ndarray) -> np.ndarray:
+    """
+    Convert LAB image to BGR color space.
+    
+    Args:
+        image: Input LAB image
+        
+    Returns:
+        BGR color space image
+    """
+    return cv2.cvtColor(image, cv2.COLOR_LAB2BGR)
+
+
+def lab_to_rgb(image: np.ndarray) -> np.ndarray:
+    """
+    Convert LAB image to RGB color space.
+    
+    Args:
+        image: Input LAB image
+        
+    Returns:
+        RGB color space image
+    """
+    return cv2.cvtColor(image, cv2.COLOR_LAB2RGB)
+
+
+def enhance_diamond_image(image: np.ndarray,
+                         clip_limit: float = 3.0,
+                         tile_grid_size: Tuple[int, int] = (8, 8)) -> np.ndarray:
+    """
+    Enhance diamond image using CLAHE in LAB color space.
+    
+    This is the recommended preprocessing step before segmentation.
+    
+    Args:
+        image: Input BGR image
+        clip_limit: CLAHE clip limit (default: 3.0)
+        tile_grid_size: CLAHE tile grid size (default: 8x8)
+        
+    Returns:
+        Enhanced BGR image
+    """
+    return apply_clahe(image, clip_limit, tile_grid_size)
+
+
+def preprocess_for_segmentation(image: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Preprocess image for segmentation.
+    
+    Returns both original and enhanced version for use in segmentation.
+    
+    Args:
+        image: Input BGR image
+        
+    Returns:
+        Tuple of (original_image, enhanced_image)
+    """
+    enhanced = enhance_diamond_image(image)
+    return image.copy(), enhanced
+
+
+def adjust_brightness_contrast(image: np.ndarray,
+                               brightness: int = 0,
+                               contrast: int = 0) -> np.ndarray:
+    """
+    Adjust brightness and contrast of image.
+    
+    Args:
+        image: Input image
+        brightness: Brightness adjustment (-100 to 100)
+        contrast: Contrast adjustment (-100 to 100)
+        
+    Returns:
+        Adjusted image
+    """
+    if brightness != 0:
+        if brightness > 0:
+            shadow = brightness
+            highlight = 255
+        else:
+            shadow = 0
+            highlight = 255 + brightness
+        alpha_b = (highlight - shadow) / 255
+        gamma_b = shadow
+        
+        image = cv2.addWeighted(image, alpha_b, image, 0, gamma_b)
+    
+    if contrast != 0:
+        f = 131 * (contrast + 127) / (127 * (131 - contrast))
+        alpha_c = f
+        gamma_c = 127 * (1 - f)
+        
+        image = cv2.addWeighted(image, alpha_c, image, 0, gamma_c)
+    
+    return image
