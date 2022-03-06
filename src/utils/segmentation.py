@@ -329,3 +329,265 @@ def adjust_brightness_contrast(image: np.ndarray,
         image = cv2.addWeighted(image, alpha_c, image, 0, gamma_c)
     
     return image
+
+
+# ============================================================================
+# Background Removal - GrabCut Implementation
+# ============================================================================
+
+
+def remove_background(image: np.ndarray,
+                     enhanced_image: Optional[np.ndarray] = None,
+                     iterations: int = 4,
+                     use_custom_mask: bool = True) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Remove background from diamond image using GrabCut algorithm.
+    
+    This is the core segmentation function that applies GrabCut to isolate
+    the diamond from the background.
+    
+    Args:
+        image: Original BGR image
+        enhanced_image: Enhanced image for better segmentation (optional)
+        iterations: Number of GrabCut iterations (default: 4)
+        use_custom_mask: Whether to use custom initialized mask (default: True)
+        
+    Returns:
+        Tuple of (segmented_image, binary_mask)
+        - segmented_image: Image with background removed (transparent background)
+        - binary_mask: Binary mask (0 or 1) indicating foreground
+    """
+    h, w = image.shape[:2]
+    
+    # Initialize mask
+    if use_custom_mask:
+        mask = init_grabcut_mask(h, w)
+    else:
+        mask = np.zeros((h, w), np.uint8)
+    
+    # Initialize background and foreground models
+    bgd_model = np.zeros((1, 65), np.float64)
+    fgd_model = np.zeros((1, 65), np.float64)
+    
+    # Use enhanced image if provided, otherwise use original
+    working_image = enhanced_image if enhanced_image is not None else image
+    
+    # Apply GrabCut
+    if use_custom_mask:
+        cv2.grabCut(working_image, mask, None, bgd_model, fgd_model, 
+                   iterations, cv2.GC_INIT_WITH_MASK)
+    else:
+        # Use rectangle mode (less accurate but faster)
+        rect = (w // 8, h // 8, 6 * w // 8, 6 * h // 8)
+        cv2.grabCut(working_image, mask, rect, bgd_model, fgd_model, 
+                   iterations, cv2.GC_INIT_WITH_RECT)
+    
+    # Create binary mask: mark foreground and probable foreground as 1
+    binary_mask = np.where((mask == cv2.GC_FGD) | (mask == cv2.GC_PR_FGD), 1, 0).astype('uint8')
+    
+    # Apply mask to original image
+    segmented = image * binary_mask[:, :, np.newaxis]
+    
+    return segmented, binary_mask
+
+
+def remove_background_batch(images: list,
+                           enhanced_images: Optional[list] = None,
+                           iterations: int = 4) -> list:
+    """
+    Remove background from multiple images.
+    
+    Args:
+        images: List of BGR images
+        enhanced_images: List of enhanced images (optional)
+        iterations: Number of GrabCut iterations
+        
+    Returns:
+        List of tuples (segmented_image, binary_mask)
+    """
+    results = []
+    
+    if enhanced_images is None:
+        enhanced_images = [None] * len(images)
+    
+    for img, enhanced in zip(images, enhanced_images):
+        segmented, mask = remove_background(img, enhanced, iterations)
+        results.append((segmented, mask))
+    
+    return results
+
+
+def apply_mask_to_image(image: np.ndarray, mask: np.ndarray) -> np.ndarray:
+    """
+    Apply binary mask to image.
+    
+    Args:
+        image: Input BGR image
+        mask: Binary mask (0 or 1)
+        
+    Returns:
+        Masked image
+    """
+    if len(mask.shape) == 2:
+        mask = mask[:, :, np.newaxis]
+    
+    return image * mask
+
+
+def refine_mask_morphology(mask: np.ndarray,
+                          kernel_size: int = 3,
+                          iterations: int = 1) -> np.ndarray:
+    """
+    Refine binary mask using morphological operations.
+    
+    Applies closing (dilation followed by erosion) to fill small holes
+    and opening (erosion followed by dilation) to remove small noise.
+    
+    Args:
+        mask: Binary mask (0 or 1)
+        kernel_size: Size of morphological kernel (default: 3)
+        iterations: Number of iterations (default: 1)
+        
+    Returns:
+        Refined binary mask
+    """
+    kernel = np.ones((kernel_size, kernel_size), np.uint8)
+    
+    # Closing: fill small holes
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=iterations)
+    
+    # Opening: remove small noise
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations=iterations)
+    
+    return mask
+
+
+def create_soft_mask(mask: np.ndarray, blur_radius: int = 5) -> np.ndarray:
+    """
+    Create soft mask with blurred edges for smoother compositing.
+    
+    Args:
+        mask: Binary mask (0 or 1)
+        blur_radius: Gaussian blur radius (default: 5)
+        
+    Returns:
+        Soft mask with values between 0 and 1
+    """
+    # Convert to float
+    soft_mask = mask.astype(np.float32)
+    
+    # Apply Gaussian blur
+    if blur_radius > 0:
+        soft_mask = cv2.GaussianBlur(soft_mask, (blur_radius, blur_radius), 0)
+    
+    return soft_mask
+
+
+def segment_with_postprocessing(image: np.ndarray,
+                               enhanced_image: Optional[np.ndarray] = None,
+                               iterations: int = 4,
+                               refine: bool = True,
+                               morph_kernel: int = 3,
+                               morph_iterations: int = 1) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Segment image with optional post-processing refinement.
+    
+    Args:
+        image: Original BGR image
+        enhanced_image: Enhanced image for segmentation
+        iterations: GrabCut iterations
+        refine: Whether to apply morphological refinement
+        morph_kernel: Morphological kernel size
+        morph_iterations: Morphological operation iterations
+        
+    Returns:
+        Tuple of (segmented_image, refined_mask)
+    """
+    # Segment
+    segmented, mask = remove_background(image, enhanced_image, iterations)
+    
+    # Refine mask if requested
+    if refine:
+        mask = refine_mask_morphology(mask, morph_kernel, morph_iterations)
+        segmented = apply_mask_to_image(image, mask)
+    
+    return segmented, mask
+
+
+def get_foreground_bbox(mask: np.ndarray) -> Optional[Tuple[int, int, int, int]]:
+    """
+    Get bounding box of foreground region in mask.
+    
+    Args:
+        mask: Binary mask
+        
+    Returns:
+        Tuple of (x, y, width, height) or None if no foreground
+    """
+    # Find all foreground pixels
+    coords = cv2.findNonZero(mask)
+    
+    if coords is None:
+        return None
+    
+    # Get bounding rectangle
+    x, y, w, h = cv2.boundingRect(coords)
+    
+    return (x, y, w, h)
+
+
+def crop_to_foreground(image: np.ndarray, 
+                      mask: np.ndarray,
+                      padding: int = 10) -> Tuple[np.ndarray, Tuple[int, int, int, int]]:
+    """
+    Crop image to foreground region with optional padding.
+    
+    Args:
+        image: Input image
+        mask: Binary mask
+        padding: Pixels to add around bounding box (default: 10)
+        
+    Returns:
+        Tuple of (cropped_image, bbox)
+    """
+    bbox = get_foreground_bbox(mask)
+    
+    if bbox is None:
+        return image, (0, 0, image.shape[1], image.shape[0])
+    
+    x, y, w, h = bbox
+    
+    # Add padding
+    x1 = max(0, x - padding)
+    y1 = max(0, y - padding)
+    x2 = min(image.shape[1], x + w + padding)
+    y2 = min(image.shape[0], y + h + padding)
+    
+    # Crop
+    cropped = image[y1:y2, x1:x2]
+    
+    return cropped, (x1, y1, x2 - x1, y2 - y1)
+
+
+def compare_segmentation_results(original: np.ndarray,
+                                segmented: np.ndarray,
+                                mask: np.ndarray) -> np.ndarray:
+    """
+    Create comparison visualization of segmentation results.
+    
+    Args:
+        original: Original image
+        segmented: Segmented image
+        mask: Binary mask
+        
+    Returns:
+        Concatenated comparison image
+    """
+    # Convert mask to 3-channel for display
+    mask_vis = cv2.cvtColor(mask * 255, cv2.COLOR_GRAY2BGR)
+    
+    # Concatenate horizontally
+    comparison = np.hstack([original, mask_vis, segmented])
+    
+    return comparison
+

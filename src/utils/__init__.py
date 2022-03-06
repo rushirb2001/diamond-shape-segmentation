@@ -29,7 +29,16 @@ from src.utils.segmentation import (
     lab_to_rgb,
     enhance_diamond_image,
     preprocess_for_segmentation,
-    adjust_brightness_contrast
+    adjust_brightness_contrast,
+    remove_background,
+    remove_background_batch,
+    apply_mask_to_image,
+    refine_mask_morphology,
+    create_soft_mask,
+    segment_with_postprocessing,
+    get_foreground_bbox,
+    crop_to_foreground,
+    compare_segmentation_results
 )
 
 __all__ = [
@@ -59,5 +68,15 @@ __all__ = [
     'lab_to_rgb',
     'enhance_diamond_image',
     'preprocess_for_segmentation',
-    'adjust_brightness_contrast'
+    'adjust_brightness_contrast',
+    # Background removal
+    'remove_background',
+    'remove_background_batch',
+    'apply_mask_to_image',
+    'refine_mask_morphology',
+    'create_soft_mask',
+    'segment_with_postprocessing',
+    'get_foreground_bbox',
+    'crop_to_foreground',
+    'compare_segmentation_results'
 ]
