@@ -41,6 +41,22 @@ from src.utils.segmentation import (
     compare_segmentation_results
 )
 
+from src.utils.visualization import (
+    find_contours,
+    get_largest_contour,
+    draw_contours,
+    draw_bounding_box,
+    get_contour_bounding_box,
+    annotate_segmentation,
+    create_comparison_grid,
+    create_before_after_comparison,
+    create_segmentation_pipeline_viz,
+    save_visualization,
+    display_image,
+    get_contour_properties,
+    add_text_overlay
+)
+
 __all__ = [
     # File utilities
     'ensure_dir',
@@ -78,5 +94,19 @@ __all__ = [
     'segment_with_postprocessing',
     'get_foreground_bbox',
     'crop_to_foreground',
-    'compare_segmentation_results'
+    'compare_segmentation_results',
+    # Visualization
+    'find_contours',
+    'get_largest_contour',
+    'draw_contours',
+    'draw_bounding_box',
+    'get_contour_bounding_box',
+    'annotate_segmentation',
+    'create_comparison_grid',
+    'create_before_after_comparison',
+    'create_segmentation_pipeline_viz',
+    'save_visualization',
+    'display_image',
+    'get_contour_properties',
+    'add_text_overlay'
 ]
