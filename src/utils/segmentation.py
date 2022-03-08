@@ -34,18 +34,17 @@ def init_grabcut_mask(height: int, width: int) -> np.ndarray:
     # Initialize with probable background
     mask = np.ones((height, width), np.uint8) * cv2.GC_PR_BGD
     
-    # Define probable foreground region (middle 60% of image)
-    h_start, h_end = height // 5, 4 * height // 5
-    w_start, w_end = width // 5, 4 * width // 5
+    # Define probable foreground region (adjusted to 60% for better coverage)
+    h_start, h_end = int(height * 0.2), int(height * 0.8)
+    w_start, w_end = int(width * 0.2), int(width * 0.8)
     mask[h_start:h_end, w_start:w_end] = cv2.GC_PR_FGD
     
-    # Define definite foreground region (center 20% of image)
-    h_center_start, h_center_end = 2 * height // 5, 3 * height // 5
-    w_center_start, w_center_end = 2 * width // 5, 3 * width // 5
+    # Define definite foreground region (adjusted to 30% for better initialization)
+    h_center_start, h_center_end = int(height * 0.35), int(height * 0.65)
+    w_center_start, w_center_end = int(width * 0.35), int(width * 0.65)
     mask[h_center_start:h_center_end, w_center_start:w_center_end] = cv2.GC_FGD
     
     return mask
-
 
 def visualize_mask(mask: np.ndarray) -> np.ndarray:
     """

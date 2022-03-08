@@ -41,6 +41,13 @@ from src.utils.segmentation import (
     compare_segmentation_results
 )
 
+from src.utils.validators import (
+    validate_image_path,
+    validate_image_array,
+    validate_output_directory,
+    validate_processing_parameters
+)
+
 from src.utils.visualization import (
     find_contours,
     get_largest_contour,
@@ -95,6 +102,11 @@ __all__ = [
     'get_foreground_bbox',
     'crop_to_foreground',
     'compare_segmentation_results',
+    # Validators
+    'validate_image_path',
+    'validate_image_array',
+    'validate_output_directory',
+    'validate_processing_parameters'
     # Visualization
     'find_contours',
     'get_largest_contour',

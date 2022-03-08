@@ -71,6 +71,10 @@ class DiamondProcessor:
         if image is None:
             raise ValueError(f"Failed to load image: {image_path}")
         
+        # Validate image dimensions
+        if image.shape[0] == 0 or image.shape[1] == 0:
+            raise ValueError(f"Invalid image dimensions: {image.shape}")
+        
         # Preprocess
         original, enhanced = preprocess_for_segmentation(image)
         
@@ -85,7 +89,14 @@ class DiamondProcessor:
         if save_result:
             output_filename = build_output_filename(shape_code, index, 'result', '.png')
             output_path = os.path.join(self.output_dir, output_filename)
-            cv2.imwrite(output_path, segmented)
+            
+            # Ensure directory exists
+            ensure_dir(os.path.dirname(output_path))
+            
+            # Save with error checking
+            success = cv2.imwrite(output_path, segmented)
+            if not success:
+                raise IOError(f"Failed to save image: {output_path}")
         
         return segmented, mask
     
