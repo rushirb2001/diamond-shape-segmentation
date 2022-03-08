@@ -5,11 +5,19 @@ Processing pipeline modules for batch diamond segmentation.
 from src.pipe.processor import (
     DiamondProcessor,
     BatchProcessor,
-    process_diamond_dataset
+    AdvancedDiamondProcessor,
+    ProcessingStats,
+    InteractiveProcessor,
+    process_diamond_dataset,
+    run_interactive_mode
 )
 
 __all__ = [
     'DiamondProcessor',
     'BatchProcessor',
-    'process_diamond_dataset'
+    'AdvancedDiamondProcessor',
+    'ProcessingStats',
+    'InteractiveProcessor',
+    'process_diamond_dataset',
+    'run_interactive_mode'
 ]
