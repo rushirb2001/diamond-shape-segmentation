@@ -16,6 +16,14 @@ from src.utils.file_utils import (
     create_output_directory
 )
 
+from src.utils.output import (
+    OutputManager,
+    ResultCollector,
+    create_output_structure,
+    save_results_batch,
+    generate_output_report
+)
+
 from src.utils.segmentation import (
     init_grabcut_mask,
     visualize_mask,
@@ -77,6 +85,12 @@ __all__ = [
     'format_bytes',
     'safe_filename',
     'create_output_directory',
+    # Output management
+    'OutputManager',
+    'ResultCollector',
+    'create_output_structure',
+    'save_results_batch',
+    'generate_output_report'
     # Segmentation utilities
     'init_grabcut_mask',
     'visualize_mask',
