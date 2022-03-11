@@ -1,0 +1,41 @@
+# Diamond Segmentation Pipeline Configuration
+# Copy this file to config.yaml and customize as needed
+
+# Dataset configuration
+dataset_variants:
+  - Shape_1d_256i
+  - Shape_5d_256i
+  - Shape_10d_256i
+default_variant: Shape_1d_256i
+
+# Image specifications
+image_size: 256
+image_channels: 3
+
+# GrabCut segmentation parameters
+grabcut_iterations: 5
+
+# CLAHE preprocessing parameters
+clahe_clip_limit: 2.5
+clahe_tile_grid_size: [8, 8]
+
+# Morphological operations
+morph_kernel_size: 3
+morph_iterations: 2
+
+# Video generation
+video_fps: 15
+video_codec: DIVX
+
+# Processing constraints
+max_image_size: 1024
+min_image_size: 64
+max_batch_size: 100
+
+# Processing configuration
+processing:
+  variant: Shape_1d_256i
+  iterations: 5
+  add_annotations: false
+  save_masks: false
+  save_stats: true

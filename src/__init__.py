@@ -10,5 +10,6 @@ __email__ = "rushirbhavsar@gmail.com"
 from src import data
 from src import utils
 from src import pipe
+from src.config import Config, ProcessingConfig, VideoConfig, get_config
 
-__all__ = ['data', 'utils', 'pipe']
+__all__ = ['data', 'utils', 'pipe', 'Config', 'ProcessingConfig', 'VideoConfig', 'get_config']
