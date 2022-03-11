@@ -25,10 +25,16 @@ from src.pipe.video_creator import (
 
 from src.pipe.video_comparison import (
     VideoComparator,
+    OverlayComparator,
     create_triple_split_video,
     create_comparison_grid,
     add_progress_bar,
-    add_frame_counter
+    add_frame_counter,
+    calculate_segmentation_metrics,
+    add_metrics_overlay,
+    create_metrics_comparison_video,
+    create_quality_report,
+    create_annotated_comparison
 )
 
 __all__ = [
@@ -51,8 +57,14 @@ __all__ = [
     'get_video_info',
     # Video comparison
     'VideoComparator',
+    'OverlayComparator',
     'create_triple_split_video',
     'create_comparison_grid',
     'add_progress_bar',
-    'add_frame_counter'
+    'add_frame_counter',
+    'calculate_segmentation_metrics',
+    'add_metrics_overlay',
+    'create_metrics_comparison_video',
+    'create_quality_report',
+    'create_annotated_comparison'
 ]
