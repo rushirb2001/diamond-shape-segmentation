@@ -23,6 +23,14 @@ from src.pipe.video_creator import (
     get_video_info
 )
 
+from src.pipe.video_comparison import (
+    VideoComparator,
+    create_triple_split_video,
+    create_comparison_grid,
+    add_progress_bar,
+    add_frame_counter
+)
+
 __all__ = [
     # Processors
     'DiamondProcessor',
@@ -40,5 +48,11 @@ __all__ = [
     'create_comparison_video',
     'create_all_shapes_video',
     'add_text_to_video',
-    'get_video_info'
+    'get_video_info',
+    # Video comparison
+    'VideoComparator',
+    'create_triple_split_video',
+    'create_comparison_grid',
+    'add_progress_bar',
+    'add_frame_counter'
 ]
