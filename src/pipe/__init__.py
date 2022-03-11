@@ -37,6 +37,14 @@ from src.pipe.video_comparison import (
     create_annotated_comparison
 )
 
+from src.pipe.animation import (
+    MaskEvolutionAnimator,
+    AlgorithmCoverageAnimator,
+    create_evolution_gif,
+    create_pipeline_animation,
+    create_dataset_coverage_animation
+)
+
 __all__ = [
     # Processors
     'DiamondProcessor',
@@ -66,5 +74,11 @@ __all__ = [
     'add_metrics_overlay',
     'create_metrics_comparison_video',
     'create_quality_report',
-    'create_annotated_comparison'
+    'create_annotated_comparison',
+    # Animation
+    'MaskEvolutionAnimator',
+    'AlgorithmCoverageAnimator',
+    'create_evolution_gif',
+    'create_pipeline_animation',
+    'create_dataset_coverage_animation'
 ]
