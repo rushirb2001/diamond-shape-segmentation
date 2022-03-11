@@ -72,6 +72,17 @@ from src.utils.visualization import (
     add_text_overlay
 )
 
+from src.utils.profiling import (
+    PerformanceProfiler,
+    PerformanceMetrics,
+    BatchProfiler,
+    profile_function,
+    measure_throughput,
+    compare_performance,
+    get_global_profiler,
+    reset_global_profiler
+)
+
 __all__ = [
     # File utilities
     'ensure_dir',
@@ -135,4 +146,13 @@ __all__ = [
     'display_image',
     'get_contour_properties',
     'add_text_overlay'
+    # Profiling
+    'PerformanceProfiler',
+    'PerformanceMetrics',
+    'BatchProfiler',
+    'profile_function',
+    'measure_throughput',
+    'compare_performance',
+    'get_global_profiler',
+    'reset_global_profiler'
 ]
