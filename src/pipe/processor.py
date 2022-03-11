@@ -6,6 +6,7 @@ Handles batch processing of diamond images with progress tracking.
 import cv2
 import os
 import numpy as np
+from pathlib import Path
 from typing import Optional, Tuple, List, Dict
 from tqdm import tqdm
 
@@ -26,10 +27,9 @@ class DiamondProcessor:
     """
     
     def __init__(self,
-                 data_loader: DiamondDataLoader,
-                 output_dir: str = 'data/processed',
-                 iterations: int = 4,
-                 add_annotations: bool = False):
+                data_loader: DiamondDataLoader,
+                iterations: int = 4,
+                add_annotations: bool = False):
         """
         Initialize diamond processor.
         
@@ -40,19 +40,19 @@ class DiamondProcessor:
             add_annotations: Whether to add contour/bbox annotations
         """
         self.data_loader = data_loader
-        self.output_dir = output_dir
+        self.output_dir = Path(__file__).parent.parent / 'data/processed'
         self.iterations = iterations
         self.add_annotations = add_annotations
         self.mapper = DiamondShapeMapper()
         
         # Ensure output directory exists
-        ensure_dir(output_dir)
+        ensure_dir(str(self.output_dir))
     
     def process_single_image(self,
-                           image_path: str,
-                           shape_code: str,
-                           index: int,
-                           save_result: bool = True) -> Tuple[np.ndarray, np.ndarray]:
+                        image_path: str,
+                        shape_code: str,
+                        index: int,
+                        save_result: bool = True) -> Tuple[np.ndarray, np.ndarray]:
         """
         Process a single diamond image.
         

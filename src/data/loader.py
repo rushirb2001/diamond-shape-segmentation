@@ -4,7 +4,8 @@ Handles shape category mappings and directory structure.
 """
 
 import os
-from typing import Dict, List, Optional, Tuple
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple, Union
 import yaml
 
 
@@ -111,12 +112,14 @@ class DiamondDataLoader:
     
     DATASET_VARIANTS = ['Shape_1d_256i', 'Shape_5d_256i', 'Shape_10d_256i']
     
-    def __init__(self, base_path: str, variant: str = 'Shape_1d_256i'):
+    def __init__(self, 
+                variant: str = 'Shape_1d_256i | Shape_5d_256i | Shape_10d_256i',
+        ) -> None:
         """
         Initialize data loader.
         
         Args:
-            base_path: Root directory containing dataset folders
+            base_path: Root directory containing dataset folders (can be relative or absolute)
             variant: Dataset variant to use (default: Shape_1d_256i)
         
         Raises:
@@ -126,15 +129,42 @@ class DiamondDataLoader:
         if variant not in self.DATASET_VARIANTS:
             raise ValueError(f"Variant must be one of {self.DATASET_VARIANTS}")
         
-        self.base_path = base_path
+        # Get the path to the raw data directory (src/data/raw)
+        self.base_path = Path(__file__).parent / 'raw'
         self.variant = variant
-        self.dataset_path = os.path.join(base_path, variant)
+        self.dataset_path = self.base_path / variant
         self.mapper = DiamondShapeMapper()
         
-        if not os.path.exists(self.dataset_path):
-            raise FileNotFoundError(f"Dataset path not found: {self.dataset_path}")
+        # Check if dataset path exists
+        if not self.dataset_path.exists():
+            # Try without variant suffix (in case images are directly in base_path)
+            if self._check_shape_folders_in_base():
+                self.dataset_path = self.base_path
+                print(f"Note: Using base path directly as shape folders found: {self.base_path}")
+            else:
+                raise FileNotFoundError(
+                    f"Dataset path not found: {self.dataset_path}\n"
+                    f"Base path: {self.base_path}\n"
+                    f"Please check that the path exists and contains the dataset variant folders."
+                )
     
-    def get_shape_directory(self, shape_id: int) -> Optional[str]:
+    def _check_shape_folders_in_base(self) -> bool:
+        """
+        Check if shape folders exist directly in base path.
+        
+        Returns:
+            True if at least one shape folder is found
+        """
+        if not self.base_path.exists():
+            return False
+        
+        shape_codes = self.mapper.list_all_shapes()
+        for code in shape_codes:
+            if (self.base_path / code).exists():
+                return True
+        return False
+    
+    def get_shape_directory(self, shape_id: int) -> Optional[Path]:
         """
         Get full path to shape directory.
         
@@ -146,10 +176,10 @@ class DiamondDataLoader:
         """
         shape_code = self.mapper.get_shape_code(shape_id)
         if shape_code:
-            return os.path.join(self.dataset_path, shape_code)
+            return self.dataset_path / shape_code
         return None
     
-    def get_shape_directory_by_code(self, shape_code: str) -> str:
+    def get_shape_directory_by_code(self, shape_code: str) -> Path:
         """
         Get full path to shape directory by code.
         
@@ -159,7 +189,7 @@ class DiamondDataLoader:
         Returns:
             Full directory path
         """
-        return os.path.join(self.dataset_path, shape_code)
+        return self.dataset_path / shape_code
     
     def list_images(self, shape_id: int) -> List[str]:
         """
@@ -172,9 +202,9 @@ class DiamondDataLoader:
             Sorted list of image filenames
         """
         shape_dir = self.get_shape_directory(shape_id)
-        if shape_dir and os.path.exists(shape_dir):
-            files = [f for f in os.listdir(shape_dir) 
-                    if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+        if shape_dir and shape_dir.exists():
+            files = [f.name for f in shape_dir.iterdir() 
+                    if f.is_file() and f.suffix.lower() in ['.png', '.jpg', '.jpeg']]
             files.sort()
             return files
         return []
@@ -190,9 +220,9 @@ class DiamondDataLoader:
             Sorted list of image filenames
         """
         shape_dir = self.get_shape_directory_by_code(shape_code)
-        if os.path.exists(shape_dir):
-            files = [f for f in os.listdir(shape_dir) 
-                    if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+        if shape_dir.exists():
+            files = [f.name for f in shape_dir.iterdir() 
+                    if f.is_file() and f.suffix.lower() in ['.png', '.jpg', '.jpeg']]
             files.sort()
             return files
         return []
@@ -206,10 +236,10 @@ class DiamondDataLoader:
             filename: Image filename
             
         Returns:
-            Full path to image file
+            Full path to image file as string
         """
         shape_dir = self.get_shape_directory(shape_id)
-        return os.path.join(shape_dir, filename)
+        return str(shape_dir / filename)
     
     def get_image_path_by_code(self, shape_code: str, filename: str) -> str:
         """
@@ -220,10 +250,10 @@ class DiamondDataLoader:
             filename: Image filename
             
         Returns:
-            Full path to image file
+            Full path to image file as string
         """
         shape_dir = self.get_shape_directory_by_code(shape_code)
-        return os.path.join(shape_dir, filename)
+        return str(shape_dir / filename)
     
     def get_dataset_info(self) -> Dict:
         """
@@ -234,8 +264,8 @@ class DiamondDataLoader:
         """
         info = {
             'variant': self.variant,
-            'base_path': self.base_path,
-            'dataset_path': self.dataset_path,
+            'base_path': str(self.base_path),
+            'dataset_path': str(self.dataset_path),
             'shapes': {},
             'total_images': 0
         }
@@ -263,7 +293,7 @@ class DiamondDataLoader:
         # Check if all shape directories exist
         for shape_code in self.mapper.list_all_shapes():
             shape_dir = self.get_shape_directory_by_code(shape_code)
-            if not os.path.exists(shape_dir):
+            if not shape_dir.exists():
                 issues.append(f"Missing directory: {shape_code}")
                 continue
             
@@ -277,7 +307,7 @@ class DiamondDataLoader:
         return len(issues) == 0, issues
 
 
-def load_dataset_config(config_path: str) -> Dict:
+def load_dataset_config(config_path: Union[str, Path]) -> Dict:
     """
     Load dataset configuration from YAML file.
     
@@ -287,6 +317,7 @@ def load_dataset_config(config_path: str) -> Dict:
     Returns:
         Configuration dictionary
     """
+    config_path = Path(config_path).resolve()
     with open(config_path, 'r') as f:
         config = yaml.safe_load(f)
     return config
