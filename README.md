@@ -6,7 +6,23 @@ A computer vision pipeline for automated diamond image segmentation using GrabCu
 [![OpenCV](https://img.shields.io/badge/opencv-4.5+-green.svg)](https://opencv.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## 📋 Table of Contents
+---
+
+## About This Project
+
+This project was developed as part of the **MiNeD Hackathon** hosted by **Nirma University**. The system implements a comprehensive automated segmentation pipeline for diamond images, processing over 57,000 images across multiple dataset variants.
+
+### Team Members
+
+- **Rushir Bhavsar** - Lead Developer
+- **Harshil Sanghvi** - Core Developer  
+- **Ruju Shah** - Core Developer
+- **Vrunda Shah** - Core Developer
+- **Khushi Patel** - Core Developer
+
+---
+
+## Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
@@ -22,12 +38,12 @@ A computer vision pipeline for automated diamond image segmentation using GrabCu
 - [Results Analysis](#results-analysis)
 - [Performance](#performance)
 - [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [Authors](#authors)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
 
-## 🎯 Overview
+---
+
+## Overview
 
 This project implements an automated segmentation pipeline for diamond images using OpenCV's GrabCut algorithm enhanced with CLAHE (Contrast Limited Adaptive Histogram Equalization) preprocessing. The system processes three dataset variants:
 
@@ -37,39 +53,54 @@ This project implements an automated segmentation pipeline for diamond images us
 
 **Total Dataset**: 57,344 images across 14 diamond shape categories
 
-## ✨ Features
+---
 
-### Core Segmentation
-- ✅ GrabCut-based background removal
-- ✅ CLAHE preprocessing for enhanced contrast
-- ✅ Morphological operations for mask refinement
-- ✅ Contour detection and bounding box annotation
-- ✅ Multi-threaded batch processing
-- ✅ Comprehensive error handling and logging
+## Features
 
-### Video Generation
-- 🎬 Triple-split videos (Before | CLAHE | After)
-- 🎬 Five-split comparison videos (5 variations side-by-side)
-- 🎬 Mask evolution animations
-- 🎬 Pipeline step-by-step demonstrations
-- 🎬 Dataset coverage visualizations
+### Core Capabilities
 
-### Analysis & Reporting
-- 📊 Quality metrics calculation
-- 📊 Statistical analysis by shape category
-- 📊 Automated report generation (JSON/CSV)
-- 📊 Comparison charts and distribution plots
-- 📊 Performance profiling and benchmarking
+| Category | Features |
+|----------|----------|
+| **Segmentation** | GrabCut-based background removal<br>CLAHE preprocessing for enhanced contrast<br>Morphological operations for mask refinement<br>Contour detection and bounding box annotation<br>Multi-threaded batch processing<br>Comprehensive error handling and logging |
+| **Video Generation** | Triple-split videos (Before \| CLAHE \| After)<br>Five-split comparison videos (5 variations side-by-side)<br>Mask evolution animations<br>Pipeline step-by-step demonstrations<br>Dataset coverage visualizations |
+| **Analysis & Reporting** | Quality metrics calculation<br>Statistical analysis by shape category<br>Automated report generation (JSON/CSV)<br>Comparison charts and distribution plots<br>Performance profiling and benchmarking |
+| **Developer Tools** | Interactive processing mode<br>Command-line interface (CLI)<br>Jupyter notebooks for exploration<br>Performance profiling utilities<br>Structured logging with rotation<br>Configurable parameters via YAML |
 
-### Developer Tools
-- 🛠️ Interactive processing mode
-- 🛠️ Command-line interface (CLI)
-- 🛠️ Jupyter notebooks for exploration
-- 🛠️ Performance profiling utilities
-- 🛠️ Structured logging with rotation
-- 🛠️ Configurable parameters via YAML
+### Processing Pipeline Features
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Input Image (256x256)                     │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  CLAHE Enhancement  │  Clip Limit: 2.5  │  Grid: 8×8        │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  GrabCut Init       │  Border-based mask (20px margin)       │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  GrabCut Iterations │  5× iterations with mask refinement    │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Post-processing    │  Morphological operations & cleanup    │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Output             │  Binary mask + Segmented image         │
+└─────────────────────────────────────────────────────────────┘
+```
 
-## 📦 Dataset
+---
+
+## Dataset
 
 ### Diamond Shape Categories
 
@@ -113,7 +144,9 @@ data/
     └── stats/
 ```
 
-## 🚀 Installation
+---
+
+## Installation
 
 ### Prerequisites
 
@@ -143,7 +176,9 @@ pip install -r requirements.txt
 python -m src.main info --data-path data/raw --variant Shape_1d_256i
 ```
 
-## 🏃 Quick Start
+---
+
+## Quick Start
 
 ### Process Single Shape
 ```bash
@@ -175,7 +210,9 @@ python -m src.main interactive
 python scripts/analyze_results.py --input data/processed --output analysis/
 ```
 
-## 📖 Usage
+---
+
+## Usage
 
 ### Command Line Interface
 
@@ -288,7 +325,9 @@ The project includes three interactive notebooks:
 jupyter notebook notebooks/
 ```
 
-## 🏗️ Pipeline Architecture
+---
+
+## Pipeline Architecture
 
 ### Segmentation Pipeline
 ```
@@ -330,7 +369,9 @@ Input Image (256x256)
 | Annotate | Segmented image | Annotated image | Add contours/boxes |
 | Save | Final image | Disk file | Store results |
 
-## 🎬 Video Generation
+---
+
+## Video Generation
 
 ### Triple-Split Videos
 
@@ -364,7 +405,9 @@ python -m src.main video five-split --shape BR --fps 15 --output videos/
 2. **Pipeline Steps**: Step-by-step algorithm demonstration
 3. **Coverage Map**: Dataset processing visualization
 
-## 📊 Results Analysis
+---
+
+## Results Analysis
 
 ### Quality Metrics
 
@@ -397,7 +440,9 @@ Overall Statistics:
   Avg sharpness: 145.67
 ```
 
-## ⚡ Performance
+---
+
+## Performance
 
 ### Benchmarks
 
@@ -421,7 +466,9 @@ Hardware: Intel Core i7, 16GB RAM, No GPU
 python -m src.main process --all --iterations 3 --max-images 100
 ```
 
-## 📁 Project Structure
+---
+
+## Project Structure
 ```
 diamond-shape-segmentation/
 ├── src/
@@ -465,43 +512,25 @@ diamond-shape-segmentation/
 └── .gitignore                  # Git ignore rules
 ```
 
-## 🤝 Contributing
+---
 
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Code Style
-
-- Follow PEP 8 guidelines
-- Add docstrings to all functions
-- Include type hints where applicable
-- Write unit tests for new features
-
-## 👥 Authors
-
-- **Rushir Bhavsar** - *Lead Developer* - rushirbhavsar@example.com
-- **Harshil Sanghvi** - *Core Developer*
-- **Ruju Shah** - *Core Developer*
-- **Vrunda Shah** - *Core Developer*
-- **Khushi Patel** - *Core Developer*
-
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+---
+
+## Acknowledgments
 
 - OpenCV community for the GrabCut implementation
+- **Nirma University** for hosting the MiNeD Hackathon
 - Diamond dataset providers
 - Academic advisors and mentors
 - Open-source contributors
 
-## 📚 References
+---
+
+## References
 
 1. Rother, C., Kolmogorov, V., & Blake, A. (2004). "GrabCut: Interactive foreground extraction using iterated graph cuts." *ACM Transactions on Graphics*, 23(3), 309-314.
 
@@ -509,16 +538,18 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 3. Bradski, G. (2000). "The OpenCV Library." *Dr. Dobb's Journal of Software Tools*.
 
-## 📞 Support
+---
+
+## Support
 
 For questions, issues, or suggestions:
 
-- 📧 Email: rushirbhavsar@gmail.com
-- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/diamond-shape-segmentation/issues)
-- 💬 Discussions: [GitHub Discussions](https://github.com/yourusername/diamond-shape-segmentation/discussions)
+- Email: rushirbhavsar@gmail.com
+- Issues: [GitHub Issues](https://github.com/yourusername/diamond-shape-segmentation/issues)
+- Discussions: [GitHub Discussions](https://github.com/yourusername/diamond-shape-segmentation/discussions)
 
 ---
 
-**Made with ❤️ by the Diamond Segmentation Team**
+**Developed by Team MiNeD at Nirma University**
 
 *Last Updated: March 11, 2022*
