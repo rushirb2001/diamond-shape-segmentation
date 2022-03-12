@@ -1,0 +1,38 @@
+Diamond Shape Segmentation
+Copyright (c) 2022 Rushir Bhavsar, Harshil Sanghvi, Ruju Shah, Vrunda Shah, Khushi Patel
+
+This project was developed as part of the MiNeD Hackathon hosted by Nirma University.
+
+================================================================================
+THIRD-PARTY SOFTWARE NOTICES
+================================================================================
+
+This software incorporates components from the following open-source projects:
+
+1. OpenCV (Open Source Computer Vision Library)
+   Copyright (c) 2000-2022, Intel Corporation and others
+   License: Apache License 2.0
+   https://opencv.org/
+
+2. NumPy
+   Copyright (c) 2005-2022, NumPy Developers
+   License: BSD 3-Clause License
+   https://numpy.org/
+
+3. Matplotlib
+   Copyright (c) 2002-2022, John D. Hunter and Matplotlib Development Team
+   License: Python Software Foundation License
+   https://matplotlib.org/
+
+4. tqdm
+   Copyright (c) 2013-2022, tqdm developers
+   License: MIT License / Mozilla Public License 2.0
+   https://github.com/tqdm/tqdm
+
+The full text of these licenses can be found in their respective project repositories.
+
+================================================================================
+
+For the complete license terms of this project, see the LICENSE file.
+
+For permission requests, contact: rushirbhavsar@gmail.com

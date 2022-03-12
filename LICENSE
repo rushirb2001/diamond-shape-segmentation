@@ -1,0 +1,123 @@
+Diamond Shape Segmentation - Research and Educational License
+
+Copyright (c) 2022 Rushir Bhavsar, Harshil Sanghvi, Ruju Shah, Vrunda Shah, Khushi Patel
+MiNeD Hackathon Project, Nirma University
+
+================================================================================
+LICENSE TERMS
+================================================================================
+
+1. PERMITTED USES
+
+   a) VIEWING AND REFERENCE
+      - Anyone may view, read, and study this code for educational purposes
+      - Code may be referenced in academic papers with proper citation
+      
+   b) PERSONAL EDUCATIONAL USE
+      - Students and educators may use this code for learning purposes
+      - Use in classroom settings and educational workshops is permitted
+      
+   c) NON-COMMERCIAL RESEARCH
+      - Academic researchers may use this code for non-commercial research
+      - Results may be published in academic papers with proper attribution
+
+2. RESTRICTED USES - REQUIRES WRITTEN PERMISSION
+
+   The following uses require prior written permission from the copyright holders:
+   
+   a) COPYING OR FORKING
+      - Creating copies of this repository
+      - Forking or cloning for development purposes
+      - Downloading complete or partial codebase
+      
+   b) MODIFICATION AND DERIVATION
+      - Creating derivative works based on this code
+      - Modifying, adapting, or building upon this code
+      - Incorporating any portion of this code into other projects
+      
+   c) REDISTRIBUTION
+      - Sharing copies of this code with others
+      - Publishing modified versions
+      - Including in software distributions
+      
+   d) COMMERCIAL USE
+      - Any commercial application or use
+      - Integration into commercial products or services
+      - Use in profit-generating activities
+
+3. ATTRIBUTION REQUIREMENTS
+
+   When referencing this work, you must include:
+   
+   - Project title: "Diamond Shape Segmentation"
+   - Authors: Rushir Bhavsar, Harshil Sanghvi, Ruju Shah, Vrunda Shah, Khushi Patel
+   - Institution: Nirma University (MiNeD Hackathon)
+   - Year: 2022
+   - Repository URL: [Your GitHub URL]
+   
+   Suggested citation format:
+   
+   Bhavsar, R., Sanghvi, H., Shah, R., Shah, V., & Patel, K. (2022). 
+   Diamond Shape Segmentation: Automated Diamond Image Segmentation using 
+   GrabCut with CLAHE Preprocessing. MiNeD Hackathon, Nirma University.
+
+4. HOW TO REQUEST PERMISSION
+
+   To request permission for any restricted use:
+   
+   Email: rushirbhavsar@gmail.com
+   Subject: "Diamond Segmentation Code - Permission Request"
+   
+   Include in your request:
+   - Your name and institutional affiliation
+   - Intended use of the code
+   - Purpose (research, education, commercial, etc.)
+   - Timeline for usage
+   - Any planned modifications or distributions
+   
+   Requests will be reviewed on a case-by-case basis.
+   Response time: 5-10 business days
+
+5. DISCLAIMER
+
+   THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+
+6. THIRD-PARTY DEPENDENCIES
+
+   This project uses the following open-source libraries with their respective licenses:
+   - OpenCV (Apache 2.0 License)
+   - NumPy (BSD License)
+   - Matplotlib (PSF License)
+   
+   Users must comply with the licenses of these dependencies.
+
+7. TERMINATION
+
+   Any violation of these terms will result in immediate termination of permissions
+   granted under this license. Upon termination, you must destroy all copies of the
+   code in your possession.
+
+8. GOVERNING LAW
+
+   This license shall be governed by and construed in accordance with the laws of India.
+
+================================================================================
+
+For questions about this license, contact:
+
+Lead Developer: Rushir Bhavsar
+Email: rushirbhavsar@gmail.com
+Institution: Nirma University
+
+Project Website: [[Project Site]](https://github.com/rushirb2001/diamond-shape-segmentation)
+GitHub Repository: [[GitHub]](https://github.com/rushirb2001/diamond-shape-segmentation)
+
+================================================================================
+
+Version 1.0 - March 11, 2022

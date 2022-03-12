@@ -24,8 +24,6 @@ This project was developed as part of the **MiNeD Hackathon** hosted by **Nirma 
 
 ## Demo Results
 
-### Triple-Split Video Demonstrations
-
 Our segmentation pipeline demonstrates robust performance across different diamond shapes. Each video shows the complete processing pipeline: **Original → CLAHE Enhanced → Segmented**.
 
 #### Asscher Cut
@@ -531,7 +529,19 @@ diamond-shape-segmentation/
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under a **Custom Research and Educational License**. 
+
+**Key Points:**
+- View and study the code freely
+- Use for educational purposes
+- Reference in academic papers
+- Copying/forking requires written permission
+- Commercial use requires written permission
+  - Modification and redistribution require written permission
+
+**To request permission:** Contact rushirbhavsar@gmail.com
+
+See the [LICENSE](LICENSE) file for complete terms.
 
 ---
 

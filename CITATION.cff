@@ -1,0 +1,45 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Diamond Shape Segmentation"
+version: 1.0.0
+date-released: 2022-03-11
+authors:
+  - family-names: "Bhavsar"
+    given-names: "Rushir"
+    email: "rushirbhavsar@gmail.com"
+  - family-names: "Sanghvi"
+    given-names: "Harshil"
+  - family-names: "Shah"
+    given-names: "Ruju"
+  - family-names: "Shah"
+    given-names: "Vrunda"
+  - family-names: "Patel"
+    given-names: "Khushi"
+repository-code: "https://github.com/rushirb2001/diamond-shape-segmentation"
+keywords:
+  - computer-vision
+  - image-segmentation
+  - diamond-detection
+  - grabcut
+  - clahe
+  - opencv
+license: "Custom Research License"
+abstract: >
+  An automated diamond image segmentation pipeline using OpenCV's 
+  GrabCut algorithm with CLAHE preprocessing. Developed as part of 
+  the MiNeD Hackathon at Nirma University.
+references:
+  - type: article
+    authors:
+      - family-names: "Rother"
+        given-names: "C."
+      - family-names: "Kolmogorov"
+        given-names: "V."
+      - family-names: "Blake"
+        given-names: "A."
+    title: "GrabCut: Interactive foreground extraction using iterated graph cuts"
+    journal: "ACM Transactions on Graphics"
+    volume: 23
+    issue: 3
+    year: 2004
+    pages: "309-314"
