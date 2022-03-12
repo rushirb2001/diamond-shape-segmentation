@@ -22,6 +22,21 @@ This project was developed as part of the **MiNeD Hackathon** hosted by **Nirma 
 
 ---
 
+## Demo Results
+
+### Triple-Split Video Demonstrations
+
+Our segmentation pipeline demonstrates robust performance across different diamond shapes. Each video shows the complete processing pipeline: **Original → CLAHE Enhanced → Segmented**.
+
+#### Asscher Cut
+[![Asscher Demo](src/data/output/videos/triple_split_AS_Asscher.gif)](src/data/output/videos/triple_split_AS_Asscher.gif)
+
+#### Brilliant Cut
+[![Brilliant Demo](src/data/output/videos/triple_split_BR_Brilliant.gif)](src/data/output/videos/triple_split_BR_Brilliant.gif)
+
+
+---
+
 ## Table of Contents
 
 - [Overview](#overview)

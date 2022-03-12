@@ -58,10 +58,8 @@ Shape_10d_256i/
 *.png
 *.jpg
 *.jpeg
-*.avi
 *.mp4
 diamond_results/
-output/
 results/
 *.txt
 !requirements.txt
