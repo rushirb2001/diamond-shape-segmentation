@@ -21,43 +21,21 @@ from src.utils.output import (
     ResultCollector,
     create_output_structure,
     save_results_batch,
-    generate_output_report
 )
 
 from src.utils.segmentation import (
-    init_grabcut_mask,
     visualize_mask,
-    get_mask_stats,
-    create_centered_mask,
-    validate_mask,
-    apply_clahe,
-    rgb_to_lab,
-    bgr_to_lab,
-    lab_to_bgr,
-    lab_to_rgb,
-    enhance_diamond_image,
     preprocess_for_segmentation,
-    adjust_brightness_contrast,
     remove_background,
-    remove_background_batch,
-    apply_mask_to_image,
-    refine_mask_morphology,
-    create_soft_mask,
-    segment_with_postprocessing,
-    get_foreground_bbox,
-    crop_to_foreground,
-    compare_segmentation_results
 )
 
 from src.utils.validators import (
     validate_image_path,
     validate_image_array,
     validate_output_directory,
-    validate_processing_parameters
 )
 
 from src.utils.visualization import (
-    find_contours,
     get_largest_contour,
     draw_contours,
     draw_bounding_box,
@@ -69,22 +47,18 @@ from src.utils.visualization import (
     save_visualization,
     display_image,
     get_contour_properties,
-    add_text_overlay
 )
 
 from src.utils.profiling import (
-    PerformanceProfiler,
     PerformanceMetrics,
     BatchProfiler,
     profile_function,
     measure_throughput,
     compare_performance,
     get_global_profiler,
-    reset_global_profiler
 )
 
 from src.utils.logging_config import (
-    setup_logging,
     get_logger,
     set_log_level,
     enable_debug_mode,

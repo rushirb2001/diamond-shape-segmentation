@@ -19,8 +19,7 @@ sys.path.append(str(Path(__file__).parent.parent))
 
 from src.data.loader import DiamondDataLoader, DiamondShapeMapper
 from src.pipe.video_comparison import VideoComparator, create_comparison_grid
-from src.utils.segmentation import preprocess_for_segmentation, remove_background
-from src.utils.visualization import add_text_overlay
+from src.utils.segmentation import segment_diamond_fast
 from src.utils.file_utils import ensure_dir
 
 
@@ -167,18 +166,15 @@ class DemoVideoGenerator:
         for var_idx in range(len(variations)):
             print(f"  Processing variation {var_idx + 1}/5...")
             
-            for img_name in tqdm(variations[var_idx], desc=f"  Var {var_idx+1}"):
+            # At the top, update the processing loop
+            for img_name in tqdm(variations[var_idx], desc=f"  Var {var_idx+1}", leave=False):
                 img_path = self.loader_5d.get_image_path(shape_id, img_name)
-                original = cv2.imread(img_path)
                 
-                if original is None:
-                    continue
+                # Use fast segmentation (3 iterations instead of 5)
+                segmented, mask, success = segment_diamond_fast(img_path, iterations=3)
                 
-                # Process
-                _, enhanced = preprocess_for_segmentation(original)
-                segmented, _ = remove_background(original, enhanced, self.iterations)
-                
-                all_frames[var_idx].append(segmented)
+                if success and segmented is not None:
+                    all_frames[var_idx].append(segmented)
         
         # Create labels
         labels = [f"{SHAPE_NAMES[shape_code]} Var {i+1}" for i in range(len(variations))]

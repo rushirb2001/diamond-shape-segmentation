@@ -14,7 +14,6 @@ from src.data.loader import DiamondDataLoader, DiamondShapeMapper
 from src.utils.segmentation import (
     preprocess_for_segmentation,
     remove_background,
-    segment_with_postprocessing
 )
 from src.utils.visualization import annotate_segmentation
 from src.utils.file_utils import ensure_dir, build_output_filename

@@ -271,6 +271,15 @@ def create_comparison_grid(frames_list: List[List[np.ndarray]],
     
     num_sequences = len(frames_list)
     num_frames = len(frames_list[0])
+
+    for i, seq in enumerate(frames_list):
+        if len(seq) != num_frames:
+            raise ValueError(f"Sequence {i} has {len(seq)} frames, expected {num_frames}")
+    
+    if len(labels) != num_sequences:
+        raise ValueError(f"Number of labels ({len(labels)}) must match sequences ({num_sequences})")
+    
+    print(f"Creating grid with {num_sequences} sequences, {num_frames} frames each")
     
     # Auto-calculate grid layout if not provided
     if grid_layout is None:
