@@ -83,6 +83,23 @@ from src.utils.profiling import (
     reset_global_profiler
 )
 
+from src.utils.logging_config import (
+    setup_logging,
+    get_logger,
+    set_log_level,
+    enable_debug_mode,
+    disable_debug_mode,
+    LogContext,
+    log_function_call,
+    create_session_log,
+    log_system_info,
+    log_processing_start,
+    log_processing_end,
+    log_error,
+    clear_logs,
+    initialize_default_logger
+)
+
 __all__ = [
     # File utilities
     'ensure_dir',
@@ -155,4 +172,19 @@ __all__ = [
     'compare_performance',
     'get_global_profiler',
     'reset_global_profiler'
+    # Logging
+    'setup_logging',
+    'get_logger',
+    'set_log_level',
+    'enable_debug_mode',
+    'disable_debug_mode',
+    'LogContext',
+    'log_function_call',
+    'create_session_log',
+    'log_system_info',
+    'log_processing_start',
+    'log_processing_end',
+    'log_error',
+    'clear_logs',
+    'initialize_default_logger'
 ]
